@@ -1,3 +1,9 @@
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 import org.junit.*;
 import static org.junit.Assert.*;
 
@@ -5,7 +11,7 @@ import static org.junit.Assert.*;
  * Class JUnitContactManagerTests - This is JUNIT test class for Contact Manager.
  * 
  * @author Daryl Smith, MSc IT 
- * @version 6
+ * @version 7
  */
 
 public class JUnitContactManagerTests
@@ -82,5 +88,27 @@ public class JUnitContactManagerTests
 		String outputNotes = myContact.getNotes();
 		String expectedNotes = "";
 		assertEquals(outputNotes, expectedNotes);
+	}
+
+	@Test
+	public void testGetMeetingId() 
+	{
+	//test Meeting getId()
+	//test 7
+		int id = 1;
+		Calendar cal = new GregorianCalendar(2015,Calendar.JUNE,15,13,0);
+
+		Contact contact = new ContactImpl(1,"Johnny","VIP");
+		Contact contact2 = new ContactImpl(2, "Jane", "High net worth");
+		Contact contact3 = new ContactImpl(3, "Sally", "Just wasting our time");
+		Set<Contact> contacts = new HashSet<Contact>();
+		contacts.add(contact);
+		contacts.add(contact2);
+		contacts.add(contact3);
+		
+		Meeting myMeeting = new MeetingImpl(id, cal, contacts);
+		int outputId = myMeeting.getId();
+		int expectedId = id;
+		assertEquals(outputId, expectedId);
 	}
 }
