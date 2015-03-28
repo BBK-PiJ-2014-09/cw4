@@ -8,12 +8,14 @@ import java.util.Set;
  * Class ContactManagerImpl - implements ContactManager Interface.
  * 
  * @author Daryl Smith, MSc IT 
- * @version 1
+ * @version 2
  */
 
 public class ContactManagerImpl implements ContactManager {
 
+	private int meetingId;
 	private int contactId;
+	private List<Meeting> myMeetings;
 	private Set<Contact> myContacts;
 	
 	ContactManagerStubImpl() {
@@ -64,11 +66,33 @@ public class ContactManagerImpl implements ContactManager {
 	}
 
 	@Override
-	public void addNewPastMeeting(Set<Contact> contacts, Calendar date,
-			String text) {
-		// TODO Auto-generated method stub
+	public void addNewPastMeeting(Set<Contact> contacts, Calendar date, String text) 
+	{		
+		//test for null arguments
+		if (contacts == null || date == null || text == null) 
+		{
+			throw new NullPointerException("At least one of the supplied parameters was null");
+		}
 		
-	}
+		//test that contacts are known and exist 
+		Iterator<Contact> myIterator = contacts.iterator();
+		if (contacts.isEmpty()) 
+		{
+			throw new IllegalArgumentException("The supplied list of contacts is empty.");
+		}
+		while (myIterator.hasNext()) 
+		{
+			//Contact tmpContact = myIterator.next();
+			if (!this.myContacts.contains(myIterator.next())) 
+			{
+				throw new IllegalArgumentException("The contact is unknown.");
+			}
+		}
+
+		PastMeeting myPastMeeting = new PastMeetingImpl(this.meetingId, date, contacts, text);
+		this.myMeetings.add(myPastMeeting);
+		this.meetingId++;
+	}		
 
 	@Override
 	public void addMeetingNotes(int id, String text) {
