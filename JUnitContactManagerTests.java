@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
  * Class JUnitContactManagerTests - This is JUNIT test class for Contact Manager.
  * 
  * @author Daryl Smith, MSc IT 
- * @version 10
+ * @version 11
  */
 
 public class JUnitContactManagerTests
@@ -152,6 +152,19 @@ public class JUnitContactManagerTests
 		assertEquals(myMeeting.getContacts(), contacts);
 	}
 
-//	MeetingImpl
-//	10	The list contains a minimum of one contact (if there were just two people: the user and the contact) and may contain an arbitrary number of them.
+	//	MeetingImpl
+	//	10 The list contains a minimum of one contact (if there were just two people: the user and the contact) and may contain an arbitrary number of them.
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testAddNewPastMeetingWithNoContacts() 
+	{
+		//test illegal argument exception (if the list of contacts is empty)
+		//test 11
+		Calendar cal = new GregorianCalendar(2015,Calendar.JANUARY,15,13,0);
+
+		Set<Contact> contacts = new HashSet<Contact>();
+
+		ContactManagerImpl manager = new ContactManagerImpl();
+		manager.addNewPastMeeting(contacts, cal, "Test meeting");
+	}
 }
