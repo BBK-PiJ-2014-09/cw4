@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
  * Class JUnitContactManagerTests - This is JUNIT test class for Contact Manager.
  * 
  * @author Daryl Smith, MSc IT 
- * @version 9
+ * @version 10
  */
 
 public class JUnitContactManagerTests
@@ -151,4 +151,7 @@ public class JUnitContactManagerTests
 		Meeting myMeeting = new MeetingImpl(id, cal, contacts);
 		assertEquals(myMeeting.getContacts(), contacts);
 	}
+
+//	MeetingImpl
+//	10	The list contains a minimum of one contact (if there were just two people: the user and the contact) and may contain an arbitrary number of them.
 }
