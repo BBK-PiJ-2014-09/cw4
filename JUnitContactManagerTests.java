@@ -41,4 +41,18 @@ public class JUnitContactManagerTests
 		int expectedId = id;
 		assertEquals(outputId, expectedId);
 	}
+
+	@Test
+	public void testGetContactName() 
+	{
+	//test Contact getName()
+	//test 4
+		int id = 1;
+		String name = "John Smith";
+		String notes = "VIP client";
+		Contact myContact = new ContactImpl(id, name, notes);
+		String outputName = myContact.getName();
+		String expectedName = name;
+		assertEquals(outputName, expectedName);
+	}
 }
