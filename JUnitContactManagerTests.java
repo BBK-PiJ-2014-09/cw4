@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
  * Class JUnitContactManagerTests - This is JUNIT test class for Contact Manager.
  * 
  * @author Daryl Smith, MSc IT 
- * @version 5
+ * @version 6
  */
 
 public class JUnitContactManagerTests
@@ -67,6 +67,20 @@ public class JUnitContactManagerTests
 		Contact myContact = new ContactImpl(id, name, notes);
 		String outputNotes = myContact.getNotes();
 		String expectedNotes = notes;
+		assertEquals(outputNotes, expectedNotes);
+	}
+
+	@Test
+	public void testGetEmptyNotes() 
+	{
+	//test Contact getNotes() empty: If we have not written anything about the contact, the empty string is returned.
+	//test 6
+		int id = 1;
+		String name = "John Smith";
+		String notes = "";
+		Contact myContact = new ContactImpl(id, name, notes);
+		String outputNotes = myContact.getNotes();
+		String expectedNotes = "";
 		assertEquals(outputNotes, expectedNotes);
 	}
 }
