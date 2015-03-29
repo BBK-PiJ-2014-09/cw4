@@ -8,7 +8,7 @@ import java.util.Set;
  * Class ContactManagerImpl - implements ContactManager Interface.
  * 
  * @author Daryl Smith, MSc IT
- * @version 7
+ * @version 8
  */
 
 public class ContactManagerImpl implements ContactManager {
@@ -176,9 +176,44 @@ public class ContactManagerImpl implements ContactManager {
 	}
 
 	@Override
-	public List<PastMeeting> getPastMeetingList(Contact contact) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<PastMeeting> getPastMeetingList(Contact contact) 
+	{
+		List<PastMeeting> myMeetingsList = new ArrayList<PastMeeting>(); 
+
+		// Check if contact exists:
+		if(!this.myContacts.contains(contact)) 
+		{
+			throw new IllegalArgumentException("A Contact for this meeting is unknown.");
+		}
+
+		for(int i = 0; i < myMeetings.size(); i++) 
+		{
+			if (myMeetings.get(i) instanceof PastMeeting) 
+			{
+				if (myMeetings.get(i).getContacts().contains(contact)) 
+				{
+					myMeetingsList.add((PastMeeting)myMeetings.get(i));
+				}
+			}
+		}
+
+		//dedupe
+		HashSet<PastMeeting> dedupedMeetingSet = new HashSet<PastMeeting>();
+		dedupedMeetingSet.addAll(myMeetingsList);
+		myMeetingsList.clear();
+		myMeetingsList.addAll(dedupedMeetingSet);
+		
+		//use an anonymous class to sort the meetings
+		myMeetingsList.sort(new Comparator<Meeting>() 
+		{
+			@Override
+			public int compare(Meeting arg0, Meeting arg1) 
+			{
+				return arg0.getDate().compareTo(arg1.getDate());
+			}
+		});
+
+		return myMeetingsList;	
 	}
 
 	@Override
