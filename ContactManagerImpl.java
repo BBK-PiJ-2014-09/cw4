@@ -140,9 +140,39 @@ public class ContactManagerImpl implements ContactManager {
 	}
 
 	@Override
-	public List<Meeting> getFutureMeetingList(Calendar date) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Meeting> getFutureMeetingList(Calendar date) 
+	{
+		List<Meeting> myMeetingsList = new ArrayList<Meeting>(); 
+
+		for(int i = 0; i < myMeetings.size(); i++) 
+		{
+			if (myMeetings.get(i) instanceof FutureMeeting) 
+			{
+				if (myMeetings.get(i).getDate().get(Calendar.YEAR) == date.get(Calendar.YEAR) &&
+					myMeetings.get(i).getDate().get(Calendar.DAY_OF_YEAR) == date.get(Calendar.DAY_OF_YEAR)) 				
+				{
+					myMeetingsList.add(myMeetings.get(i));
+				}
+			}
+		}
+
+		//dedupe
+		HashSet<Meeting> dedupedMeetingSet = new HashSet<Meeting>();
+		dedupedMeetingSet.addAll(myMeetingsList);
+		myMeetingsList.clear();
+		myMeetingsList.addAll(dedupedMeetingSet);
+		
+		//use an anonymous class to sort the meetings
+		myMeetingsList.sort(new Comparator<Meeting>() 
+		{
+			@Override
+			public int compare(Meeting arg0, Meeting arg1) 
+			{
+				return arg0.getDate().compareTo(arg1.getDate());
+			}
+		});
+		
+		return myMeetingsList;	
 	}
 
 	@Override
