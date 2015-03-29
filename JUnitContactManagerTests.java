@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
  * Class JUnitContactManagerTests - This is JUNIT test class for Contact Manager.
  * 
  * @author Daryl Smith, MSc IT 
- * @version 27
+ * @version 28
  */
 
 public class JUnitContactManagerTests
@@ -545,4 +545,30 @@ public class JUnitContactManagerTests
 		assertEquals(myMeetings.get(2).getDate(),cal3);
 		assertEquals(myMeetings.get(3).getDate(),cal4);		
 	}
+
+	@Test
+	public void testGetFutureMeetingListByContactWitNoMeetings() 
+	{
+		//If there are no meetings, the returned list will be empty.
+		//test 28	
+		ContactManagerImpl manager = new ContactManagerImpl();
+		
+		manager.addNewContact("Johnny", "VIP");
+		manager.addNewContact("Jane", "High net worth");
+
+		Calendar cal = new GregorianCalendar(2015,Calendar.JUNE,15,13,0);
+
+		Contact contact = new ContactImpl(1,"Johnny","VIP");
+		Set<Contact> contacts = new HashSet<Contact>();
+		contacts.add(contact);
+		manager.addFutureMeeting(contacts,cal);
+
+		
+		//Contact otherContact = new ContactImpl(1,"Johnny", "VIP");
+		Contact otherContact = new ContactImpl(2,"Jane","High net worth");
+		List<Meeting> myMeetings = manager.getFutureMeetingList(otherContact);
+		
+		assertTrue(myMeetings.size() == 0);
+	}	
+
 }
