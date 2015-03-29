@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
  * Class JUnitContactManagerTests - This is JUNIT test class for Contact Manager.
  * 
  * @author Daryl Smith, MSc IT 
- * @version 19
+ * @version 20
  */
 
 public class JUnitContactManagerTests
@@ -340,5 +340,37 @@ public class JUnitContactManagerTests
 		assertEquals(actualMeetingId, INITIAL_MEETING_ID);
 		assertEquals(actualMeetingDate, cal);
 		assertEquals(actualMeetingContacts, contacts);
+	}
+
+	@Test
+	public void testNoPastMeetingId() 
+	{
+		//test return null if it there is no past meeting
+		//test 20
+		final int NON_EXISTANT_MEETING_ID = 99;
+		//Calendar cal = new GregorianCalendar(2015,Calendar.JANUARY,15,13,0);
+
+		ContactManagerImpl manager = new ContactManagerImpl();
+	
+		//manager.addNewContact("Johnny", "VIP");
+		//manager.addNewContact("Jane", "High net worth");
+		//manager.addNewContact("Sally", "Just wasting our time");
+
+		//Contact contact = new ContactImpl(1, "Johnny", "VIP");
+		//Contact contact2 = new ContactImpl(2, "Jane", "High net worth");
+		//Contact contact3 = new ContactImpl(3, "Sally", "Just wasting our time");
+		//Set<Contact> contacts = new HashSet<Contact>();
+		//contacts.add(contact);
+		//contacts.add(contact2);
+		//contacts.add(contact3);
+
+		//manager.addNewPastMeeting(contacts, cal, "past meeting test");
+		//int actualMeetingId = manager.getPastMeeting(NON_EXISTANT_MEETING_ID).getId();
+		//Calendar actualMeetingDate = manager.getPastMeeting(NON_EXISTANT_MEETING_ID).getDate();
+		//Set<Contact> actualMeetingContacts = manager.getPastMeeting(NON_EXISTANT_MEETING_ID).getContacts();
+		//assertEquals(actualMeetingId, null);
+		//assertEquals(actualMeetingDate, null);
+		//assertEquals(actualMeetingContacts, null);
+		assertEquals(manager.getPastMeeting(NON_EXISTANT_MEETING_ID), null);
 	}
 }
