@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
  * Class JUnitContactManagerTests - This is JUNIT test class for Contact Manager.
  * 
  * @author Daryl Smith, MSc IT 
- * @version 13
+ * @version 14
  */
 
 public class JUnitContactManagerTests
@@ -187,7 +187,7 @@ public class JUnitContactManagerTests
 	@Test(expected = NullPointerException.class)
 	public void testAddNewPastMeetingNullArg() 
 	{
-		//test null pointer exception (if any of the arguments is null )
+		//test null pointer exception (if any of the arguments are null)
 		//test 13
 		Calendar cal = new GregorianCalendar(2015,Calendar.JANUARY,15,13,0);
 
@@ -205,5 +205,28 @@ public class JUnitContactManagerTests
 		manager.addNewPastMeeting(null, cal, "Test meeting");
 		manager.addNewPastMeeting(contacts, null, "Test meeting");
 		manager.addNewPastMeeting(contacts, cal, null);
+	}
+
+	@Test
+	public void testGetPastMeetingNotes() 
+	{
+		//test return the notes from the past meeting.
+		//test 14
+		int id = 1;
+		Calendar cal = new GregorianCalendar(2015,Calendar.JANUARY,15,13,0);
+
+		Contact contact = new ContactImpl(1,"Johnny","VIP");
+		Contact contact2 = new ContactImpl(2, "Jane", "High net worth");
+		Contact contact3 = new ContactImpl(3, "Sally", "Just wasting our time");
+
+		Set<Contact> contacts = new HashSet<Contact>();
+		contacts.add(contact);
+		contacts.add(contact2);
+		contacts.add(contact3);
+
+		String notes = "Exploratory initial meeting";
+		
+		PastMeetingImpl myMeeting = new PastMeetingImpl(id, cal, contacts, notes);
+		assertEquals(myMeeting.getNotes(), notes);
 	}
 }
