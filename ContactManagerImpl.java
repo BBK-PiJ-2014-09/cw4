@@ -8,7 +8,7 @@ import java.util.Set;
  * Class ContactManagerImpl - implements ContactManager Interface.
  * 
  * @author Daryl Smith, MSc IT 
- * @version 2
+ * @version 4
  */
 
 public class ContactManagerImpl implements ContactManager {
@@ -24,9 +24,29 @@ public class ContactManagerImpl implements ContactManager {
 	}
 
 	@Override
-	public int addFutureMeeting(Set<Contact> contacts, Calendar date) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int addFutureMeeting(Set<Contact> contacts, Calendar date) 
+	{
+		
+		// if the given date is set in the past:
+		if (date.before(Calendar.getInstance())) 
+		{
+			throw new IllegalArgumentException("Can't add historic date as a future meeting.");
+		}
+		
+		//test that contact are known and exist 
+		Iterator<Contact> myIterator = contacts.iterator();
+		while (myIterator.hasNext()) 
+		{
+			//Contact tmpContact = myIterator.next();
+			if (!this.myContacts.contains(myIterator.next())) 
+			{
+				throw new IllegalArgumentException("The contact is unknown.");
+			}
+		}		
+		
+		FutureMeeting myFutureMeeting = new FutureMeetingImpl(this.meetingId, date, contacts);
+		this.myMeetings.add(myFutureMeeting);
+		return this.meetingId++;
 	}
 
 	@Override
@@ -95,9 +115,41 @@ public class ContactManagerImpl implements ContactManager {
 	}		
 
 	@Override
-	public void addMeetingNotes(int id, String text) {
-		// TODO Auto-generated method stub
-		
+	public void addMeetingNotes(int id, String text) 
+	{
+		//test for null notes
+		if (text == null) 
+		{
+			throw new NullPointerException("The supplied notes for this meeting is null");
+		}
+
+		boolean idFound = false;
+		for(int i = 0; i < myMeetings.size(); i++) 
+		{
+			if (myMeetings.get(i).getId() == id) 
+			{
+				idFound = true;
+				if (myMeetings.get(i) instanceof PastMeeting) 
+				{
+					((PastMeetingImpl)myMeetings.get(i)).setNotes(text);
+				}
+				else if (myMeetings.get(i) instanceof FutureMeeting) 
+				{
+					// check whether the meeting is now in the past
+					if (myMeetings.get(i).getDate().after(Calendar.getInstance())) 
+					{
+						throw new IllegalStateException("The meeting is set for a date in the future .");
+					}
+
+					PastMeetingImpl myPastMeeting = new PastMeetingImpl(id, myMeetings.get(i).getDate(), myMeetings.get(i).getContacts(), text);
+					myMeetings.set(i, myPastMeeting);				
+				}
+			}
+		}
+		if (!idFound) 
+		{
+			throw new IllegalArgumentException("The meeting supplied does not exist.");
+		}	
 	}
 
 	@Override
