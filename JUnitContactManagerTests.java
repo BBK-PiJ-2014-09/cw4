@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
  * Class JUnitContactManagerTests - This is JUNIT test class for Contact Manager.
  * 
  * @author Daryl Smith, MSc IT 
- * @version 11
+ * @version 12
  */
 
 public class JUnitContactManagerTests
@@ -163,6 +163,22 @@ public class JUnitContactManagerTests
 		Calendar cal = new GregorianCalendar(2015,Calendar.JANUARY,15,13,0);
 
 		Set<Contact> contacts = new HashSet<Contact>();
+
+		ContactManagerImpl manager = new ContactManagerImpl();
+		manager.addNewPastMeeting(contacts, cal, "Test meeting");
+	}
+
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testAddNewPastMeetingWithNonExistantContact() 
+	{
+		//test illegal argument exception (if any of the contacts does not exist)
+		//test 12
+		Calendar cal = new GregorianCalendar(2015,Calendar.JANUARY,15,13,0);
+
+		Contact contact = new ContactImpl(1, null, null);
+		Set<Contact> contacts = new HashSet<Contact>();
+		contacts.add(contact);
 
 		ContactManagerImpl manager = new ContactManagerImpl();
 		manager.addNewPastMeeting(contacts, cal, "Test meeting");
