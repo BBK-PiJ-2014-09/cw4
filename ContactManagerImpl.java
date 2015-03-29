@@ -1,6 +1,14 @@
+import java.io.BufferedReader;	
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Comparator;
+import java.util.GregorianCalendar;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -8,7 +16,7 @@ import java.util.Set;
  * Class ContactManagerImpl - implements ContactManager Interface.
  * 
  * @author Daryl Smith, MSc IT
- * @version 9
+ * @version 10
  */
 
 public class ContactManagerImpl implements ContactManager {
