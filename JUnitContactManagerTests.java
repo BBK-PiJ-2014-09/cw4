@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
  * Class JUnitContactManagerTests - This is JUNIT test class for Contact Manager.
  * 
  * @author Daryl Smith, MSc IT 
- * @version 31
+ * @version 32
  */
 
 public class JUnitContactManagerTests
@@ -653,5 +653,41 @@ public class JUnitContactManagerTests
 		
 		Contact otherContact = new ContactImpl(123,"Johnny123","hello");
 		List<Meeting> myMeetings = manager.getFutureMeetingList(otherContact);		
+	}
+
+	@Test
+	public void testGetFutureMeetingListByDate() 
+	{
+	//returns the list of meetings that are scheduled for the specified date.
+	//test 32
+		ContactManagerImpl manager = new ContactManagerImpl();
+		
+		manager.addNewContact("Johnny", "VIP");
+		manager.addNewContact("Jane", "High net worth");
+		manager.addNewContact("Sally", "Just wasting our time");
+
+		Calendar cal1 = new GregorianCalendar(2015,Calendar.OCTOBER,21,9,0);
+		Calendar cal2 = new GregorianCalendar(2015,Calendar.OCTOBER,21,10,0);
+		Calendar cal3 = new GregorianCalendar(2015,Calendar.OCTOBER,21,13,0);
+		Calendar cal4 = new GregorianCalendar(2015,Calendar.OCTOBER,21,14,0);
+
+		Contact contact1 = new ContactImpl(1,"Johnny","VIP");
+		Contact contact2 = new ContactImpl(2,"Jane", "High net worth");
+		//Contact contact3 = new ContactImpl(3,"Sally", "Just wasting our time");
+		Set<Contact> contacts = new HashSet<Contact>();
+		contacts.add(contact1);
+		contacts.add(contact2);
+		
+		manager.addFutureMeeting(contacts,cal1);
+		manager.addFutureMeeting(contacts,cal2);
+		manager.addFutureMeeting(contacts,cal3);
+		manager.addFutureMeeting(contacts,cal4);
+		
+		Calendar calTest = new GregorianCalendar(2015,Calendar.OCTOBER,21);
+		List<Meeting> myMeetings = manager.getFutureMeetingList(calTest);
+		assertEquals(myMeetings.get(0).getDate(),cal1);
+		assertEquals(myMeetings.get(1).getDate(),cal2);
+		assertEquals(myMeetings.get(2).getDate(),cal3);
+		assertEquals(myMeetings.get(3).getDate(),cal4);		
 	}
 }
