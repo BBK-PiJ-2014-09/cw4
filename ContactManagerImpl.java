@@ -296,10 +296,31 @@ public class ContactManagerImpl implements ContactManager {
 		this.contactId++;
 	}
 
-	@Override
-	public Set<Contact> getContacts(int... ids) {
-		// TODO Auto-generated method stub
-		return null;
+	public Set<Contact> getContacts(int... ids) 
+	{
+		Set<Contact> contactSet = new HashSet<Contact>();
+
+		Iterator<Contact> myIterator = this.myContacts.iterator();
+
+		for (int i = 0; i < ids.length; i++) 
+		{
+			while (myIterator.hasNext()) 
+			{
+				Contact tmpContact = myIterator.next();
+				if (tmpContact.getId() == ids[i]) 
+				{
+					contactSet.add(tmpContact);
+				}
+			}
+			myIterator = this.myContacts.iterator();
+		}
+		
+		if (contactSet.size() != ids.length) 
+		{
+			throw new IllegalArgumentException("Not found all ids");
+		}
+		
+		return contactSet;
 	}
 
 	@Override
