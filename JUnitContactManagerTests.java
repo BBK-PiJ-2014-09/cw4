@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
  * Class JUnitContactManagerTests - This is JUNIT test class for Contact Manager.
  * 
  * @author Daryl Smith, MSc IT 
- * @version 48
+ * @version 49
  */
 
 public class JUnitContactManagerTests
@@ -1079,6 +1079,36 @@ public class JUnitContactManagerTests
 		Set<Contact> actualContactSet = new HashSet<Contact>();
 		//actualContactSet = manager.getContacts("j");
 		String tester = null;
+		actualContactSet = manager.getContacts(tester);
+	}
+
+	@Test(expected = NullPointerException.class)
+	public void testGetContactsByNullIDs() 
+	{
+		//test throws NullPointerException if the parameter is null
+		//test 49
+		ContactManagerImpl manager = new ContactManagerImpl();
+		manager.addNewContact("Johnny", "VIP");
+		manager.addNewContact("Jane", "High net worth");
+		manager.addNewContact("Sally", "Just wasting our time");
+		manager.addNewContact("Sarah", "Good prospect");
+		manager.addNewContact("Anjum", "Will he show up?");
+
+		Contact contact = new ContactImpl(1, "Johnny","VIP");
+		Contact contact2 = new ContactImpl(2, "Jane", "High net worth");
+		Contact contact3 = new ContactImpl(3, "Sally", "Just wasting our time");
+		Contact contact4 = new ContactImpl(4, "Sarah", "Good prospect");
+		Contact contact5 = new ContactImpl(5, "Anjum", "Will he show up?");
+		
+		Set<Contact> expectedContactSet = new HashSet<Contact>();
+		expectedContactSet.add(contact);
+		expectedContactSet.add(contact2);
+		expectedContactSet.add(contact3);
+		expectedContactSet.add(contact4);
+		expectedContactSet.add(contact5);
+
+		Set<Contact> actualContactSet = new HashSet<Contact>();
+		Integer tester = null;
 		actualContactSet = manager.getContacts(tester);
 	}
 }
