@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
  * Class JUnitContactManagerTests - This is JUNIT test class for Contact Manager.
  * 
  * @author Daryl Smith, MSc IT 
- * @version 16
+ * @version 17
  */
 
 public class JUnitContactManagerTests
@@ -269,5 +269,26 @@ public class JUnitContactManagerTests
 		Set<Contact> contacts = new HashSet<Contact>();
 		contacts.add(contact);
 		assertEquals(manager.addFutureMeeting(contacts,cal), INITIAL_MEETING_ID);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testGetFutureMeetingWithPastDate() 
+	{
+		//test throws IllegalArgumentException if the meeting is set for a time in the past
+		//test 17
+		ContactManagerImpl manager = new ContactManagerImpl();
+		
+		manager.addNewContact("Johnny", "VIP");
+		manager.addNewContact("Jane", "High net worth");
+		manager.addNewContact("Sally", "Just wasting our time");
+
+		Calendar cal = new GregorianCalendar(2015,Calendar.JANUARY,15,13,0);
+
+		Contact contact = new ContactImpl(1,"Johnny","VIP");
+		Contact contact2 = new ContactImpl(2,"Jane","High net worth");
+		Set<Contact> contacts = new HashSet<Contact>();
+		contacts.add(contact);
+		contacts.add(contact2);
+		manager.addFutureMeeting(contacts,cal);
 	}
 }
