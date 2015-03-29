@@ -87,7 +87,7 @@ public class ContactManagerImpl implements ContactManager {
 		return null;
 	}
 
-	@Override
+		@Override
 	public Meeting getMeeting(int id) 
 	{
 		for(int i = 0; i < myMeetings.size(); i++) 
@@ -99,9 +99,44 @@ public class ContactManagerImpl implements ContactManager {
 	}
 
 	@Override
-	public List<Meeting> getFutureMeetingList(Contact contact) {
-		// TODO Auto-generated method stub
-		return null;
+	public List<Meeting> getFutureMeetingList(Contact contact) 
+	{
+		// Check if contact exists:
+		if(!this.myContacts.contains(contact)) 
+		{
+			throw new IllegalArgumentException("A Contact for this meeting is unknown.");
+		}
+		
+		List<Meeting> myMeetingsList = new ArrayList<Meeting>();
+
+		for(int i = 0; i < myMeetings.size(); i++) 
+		{
+			if (myMeetings.get(i) instanceof FutureMeeting) 
+			{
+				if (myMeetings.get(i).getContacts().contains(contact)) 
+				{
+					myMeetingsList.add(myMeetings.get(i));
+				}
+			}
+		}
+		
+		//dedupe
+		HashSet<Meeting> dedupedMeetingSet = new HashSet<Meeting>();
+		dedupedMeetingSet.addAll(myMeetingsList);
+		myMeetingsList.clear();
+		myMeetingsList.addAll(dedupedMeetingSet);
+
+		//use an anonymous class to sort the meetings
+		myMeetingsList.sort(new Comparator<Meeting>() 
+		{
+			@Override
+			public int compare(Meeting arg0, Meeting arg1) 
+			{
+				return arg0.getDate().compareTo(arg1.getDate());
+			}
+		});
+		
+		return myMeetingsList;
 	}
 
 	@Override
