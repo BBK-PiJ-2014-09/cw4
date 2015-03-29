@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
  * Class JUnitContactManagerTests - This is JUNIT test class for Contact Manager.
  * 
  * @author Daryl Smith, MSc IT 
- * @version 45
+ * @version 46
  */
 
 public class JUnitContactManagerTests
@@ -999,5 +999,26 @@ public class JUnitContactManagerTests
 		Set<Contact> actualContactSet = new HashSet<Contact>();
 		actualContactSet = manager.getContacts(contact.getId(),contact2.getId(), contact3.getId(), contact4.getId(), contact5.getId());;
 		assertEquals(actualContactSet,expectedContactSet);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testGetNonExistantContacts() 
+	{
+		//test throws IllegalArgumentException if any of the IDs does not correspond to a real contact
+		//test 46
+		ContactManagerImpl manager = new ContactManagerImpl();
+		manager.addNewContact("Johnny", "VIP");
+		manager.addNewContact("Jane", "High net worth");
+		manager.addNewContact("Sally", "Just wasting our time");
+		manager.addNewContact("Sarah", "Good prospect");
+		manager.addNewContact("Anjum", "Will he show up?");
+
+		Contact contact = new ContactImpl(1, "Johnny","VIP");
+		Contact contact2 = new ContactImpl(2, "Jane", "High net worth");
+		Contact contact3 = new ContactImpl(3, "Sally", "Just wasting our time");
+		Contact contact4 = new ContactImpl(4, "Sarah", "Good prospect");
+		Contact contact5 = new ContactImpl(5, "Anjum", "Will he show up?");
+		
+		manager.getContacts(contact2.getId(),contact.getId(), contact.getId()+55);
 	}
 }
