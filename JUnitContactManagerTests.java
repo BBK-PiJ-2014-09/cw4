@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
  * Class JUnitContactManagerTests - This is JUNIT test class for Contact Manager.
  * 
  * @author Daryl Smith, MSc IT 
- * @version 32
+ * @version 34
  */
 
 public class JUnitContactManagerTests
@@ -689,5 +689,21 @@ public class JUnitContactManagerTests
 		assertEquals(myMeetings.get(1).getDate(),cal2);
 		assertEquals(myMeetings.get(2).getDate(),cal3);
 		assertEquals(myMeetings.get(3).getDate(),cal4);		
+	}
+
+	//returns the list of meetings that took place on the specified date.
+	//test 33
+	//cannot implement this test as it is not possible to set a past date for a future meeting 
+
+	@Test
+	public void testGetFutureMeetingListByDateWithNoMeetings() 
+	{
+		//if there are no meetings, the returned list will be empty.
+		//test 34
+		ContactManagerImpl manager = new ContactManagerImpl();
+		
+		Calendar calTest = new GregorianCalendar(2015,Calendar.OCTOBER,21);
+		List<Meeting> myMeetings = manager.getFutureMeetingList(calTest);
+		assertTrue(myMeetings.size() == 0);
 	}
 }
