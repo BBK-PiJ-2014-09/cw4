@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
  * Class JUnitContactManagerTests - This is JUNIT test class for Contact Manager.
  * 
  * @author Daryl Smith, MSc IT 
- * @version 39
+ * @version 40
  */
 
 public class JUnitContactManagerTests
@@ -860,5 +860,40 @@ public class JUnitContactManagerTests
 		assertEquals(myMeetings.get(1).getDate(),cal2);
 		assertEquals(myMeetings.get(2).getDate(),cal3);
 		assertEquals(myMeetings.get(3).getDate(),cal4);		
+	}
+
+	@Test
+	public void testGetPastMeetingListByContactNoDupes() 
+	{
+		//The list will not contain any duplicates. 
+		//test 40
+		ContactManagerImpl manager = new ContactManagerImpl();
+		
+		manager.addNewContact("Johnny", "VIP");
+		manager.addNewContact("Jane", "High net worth");
+		manager.addNewContact("Sally", "Just wasting our time");
+
+		Calendar cal1 = new GregorianCalendar(2015,Calendar.JANUARY,21,9,0);
+		Calendar cal2 = new GregorianCalendar(2015,Calendar.JANUARY,21,14,0);
+		Calendar cal3 = new GregorianCalendar(2015,Calendar.JANUARY,21,13,0);
+		Calendar cal4 = new GregorianCalendar(2015,Calendar.JANUARY,21,10,0);
+		Calendar cal5 = new GregorianCalendar(2015,Calendar.JANUARY,21,9,0);
+		Calendar cal6 = new GregorianCalendar(2015,Calendar.JANUARY,21,14,0);
+
+		Contact contact1 = new ContactImpl(1,"Johnny","VIP");
+		Contact contact2 = new ContactImpl(2,"Jane", "High net worth");
+		Set<Contact> contacts = new HashSet<Contact>();
+		contacts.add(contact1);
+		contacts.add(contact2);
+		
+		manager.addNewPastMeeting(contacts,cal1, "Past Meeting1");
+		manager.addNewPastMeeting(contacts,cal2, "Past Meeting2");
+		manager.addNewPastMeeting(contacts,cal3, "Past Meeting3");
+		manager.addNewPastMeeting(contacts,cal4, "Past Meeting4");
+		manager.addNewPastMeeting(contacts,cal5, "Past Meeting5");
+		manager.addNewPastMeeting(contacts,cal6, "Past Meeting6");
+		
+		List<PastMeeting> myMeetings = manager.getPastMeetingList(contact1);
+		assertTrue(myMeetings.size() == 4);
 	}
 }
