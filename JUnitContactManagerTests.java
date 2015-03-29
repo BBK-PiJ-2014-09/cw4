@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
  * Class JUnitContactManagerTests - This is JUNIT test class for Contact Manager.
  * 
  * @author Daryl Smith, MSc IT 
- * @version 44
+ * @version 45
  */
 
 public class JUnitContactManagerTests
@@ -969,5 +969,35 @@ public class JUnitContactManagerTests
 
 		manager.addNewPastMeeting(contacts, cal, null);
 		manager.addMeetingNotes(1, null);
+	}
+
+	@Test
+	public void testGetContactsByIDs() 
+	{
+		//test return a list containing the contacts that correspond to the IDs
+		//test 45
+		ContactManagerImpl manager = new ContactManagerImpl();
+		manager.addNewContact("Johnny", "VIP");
+		manager.addNewContact("Jane", "High net worth");
+		manager.addNewContact("Sally", "Just wasting our time");
+		manager.addNewContact("Sarah", "Good prospect");
+		manager.addNewContact("Anjum", "Will he show up?");
+
+		Contact contact = new ContactImpl(1, "Johnny","VIP");
+		Contact contact2 = new ContactImpl(2, "Jane", "High net worth");
+		Contact contact3 = new ContactImpl(3, "Sally", "Just wasting our time");
+		Contact contact4 = new ContactImpl(4, "Sarah", "Good prospect");
+		Contact contact5 = new ContactImpl(5, "Anjum", "Will he show up?");
+		
+		Set<Contact> expectedContactSet = new HashSet<Contact>();
+		expectedContactSet.add(contact);
+		expectedContactSet.add(contact2);
+		expectedContactSet.add(contact3);
+		expectedContactSet.add(contact4);
+		expectedContactSet.add(contact5);
+
+		Set<Contact> actualContactSet = new HashSet<Contact>();
+		actualContactSet = manager.getContacts(contact.getId(),contact2.getId(), contact3.getId(), contact4.getId(), contact5.getId());;
+		assertEquals(actualContactSet,expectedContactSet);
 	}
 }
