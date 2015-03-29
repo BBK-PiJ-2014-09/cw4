@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
  * Class JUnitContactManagerTests - This is JUNIT test class for Contact Manager.
  * 
  * @author Daryl Smith, MSc IT 
- * @version 38
+ * @version 39
  */
 
 public class JUnitContactManagerTests
@@ -830,4 +830,35 @@ public class JUnitContactManagerTests
 		
 		assertTrue(myMeetings.size() == 0);
 	}	
+
+	@Test
+	public void testGetPastMeetingListByContactSorted() 
+	{
+		//test past meetings are returned in date order
+		//test 39	
+		ContactManagerImpl manager = new ContactManagerImpl();
+		
+		manager.addNewContact("Johnny", "VIP");
+		manager.addNewContact("Jane", "High net worth");
+		manager.addNewContact("Sally", "Just wasting our time");
+
+		Calendar cal = new GregorianCalendar(2015,Calendar.JANUARY,14,13,0);
+		Calendar cal2 = new GregorianCalendar(2015,Calendar.JANUARY,15,14,0);
+		Calendar cal3 = new GregorianCalendar(2015,Calendar.JANUARY,19,13,0);
+		Calendar cal4 = new GregorianCalendar(2015,Calendar.JANUARY,21,13,0);
+
+		Contact contact = new ContactImpl(1,"Johnny","VIP");
+		Set<Contact> contacts = new HashSet<Contact>();
+		contacts.add(contact);
+		manager.addNewPastMeeting(contacts,cal2, "Past Meeting2");
+		manager.addNewPastMeeting(contacts,cal3, "Past Meeting3");
+		manager.addNewPastMeeting(contacts,cal,"Past Meeting1");
+		manager.addNewPastMeeting(contacts,cal4, "Past Meeting4");
+		
+		List<PastMeeting> myMeetings = manager.getPastMeetingList(contact);
+		assertEquals(myMeetings.get(0).getDate(),cal);
+		assertEquals(myMeetings.get(1).getDate(),cal2);
+		assertEquals(myMeetings.get(2).getDate(),cal3);
+		assertEquals(myMeetings.get(3).getDate(),cal4);		
+	}
 }
