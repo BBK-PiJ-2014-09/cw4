@@ -324,9 +324,26 @@ public class ContactManagerImpl implements ContactManager {
 	}
 
 	@Override
-	public Set<Contact> getContacts(String name) {
-		// TODO Auto-generated method stub
-		return null;
+	public Set<Contact> getContacts(String name) 
+	{
+		if (name == null) 
+		{
+			throw new NullPointerException();
+		}
+		
+		Set<Contact> contactSet = new HashSet<Contact>();
+
+		Iterator<Contact> myIterator = this.myContacts.iterator();
+		
+		while (myIterator.hasNext()) 
+		{
+			Contact tmpContact = myIterator.next();
+			if (tmpContact.getName().contains(name)) 
+			{
+				contactSet.add(tmpContact);
+			}
+		}
+		return contactSet;
 	}
 
 	@Override
