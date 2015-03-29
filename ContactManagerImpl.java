@@ -429,6 +429,7 @@ public class ContactManagerImpl implements ContactManager {
 					
 				data = myReader.readLine();
 			}
+			myReader.close();
 		} catch (FileNotFoundException e) 
 		{
 			System.out.println("file not found");
