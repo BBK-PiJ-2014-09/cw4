@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
  * Class JUnitContactManagerTests - This is JUNIT test class for Contact Manager.
  * 
  * @author Daryl Smith, MSc IT 
- * @version 49
+ * @version 50
  */
 
 public class JUnitContactManagerTests
@@ -152,8 +152,8 @@ public class JUnitContactManagerTests
 		assertEquals(myMeeting.getContacts(), contacts);
 	}
 
-	//	MeetingImpl
-	//	10 The list contains a minimum of one contact (if there were just two people: the user and the contact) and may contain an arbitrary number of them.
+//	MeetingImpl
+//	10	The list contains a minimum of one contact (if there were just two people: the user and the contact) and may contain an arbitrary number of them.
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testAddNewPastMeetingWithNoContacts() 
@@ -167,7 +167,6 @@ public class JUnitContactManagerTests
 		ContactManagerImpl manager = new ContactManagerImpl();
 		manager.addNewPastMeeting(contacts, cal, "Test meeting");
 	}
-
 
 	@Test(expected = IllegalArgumentException.class)
 	public void testAddNewPastMeetingWithNonExistantContact() 
@@ -183,7 +182,7 @@ public class JUnitContactManagerTests
 		ContactManagerImpl manager = new ContactManagerImpl();
 		manager.addNewPastMeeting(contacts, cal, "Test meeting");
 	}
-
+	
 	@Test(expected = NullPointerException.class)
 	public void testAddNewPastMeetingNullArg() 
 	{
@@ -206,7 +205,7 @@ public class JUnitContactManagerTests
 		manager.addNewPastMeeting(contacts, null, "Test meeting");
 		manager.addNewPastMeeting(contacts, cal, null);
 	}
-
+	
 	@Test
 	public void testGetPastMeetingNotes() 
 	{
@@ -379,7 +378,7 @@ public class JUnitContactManagerTests
 	{
 		//test IllegalArgumentException if there is a meeting with that ID happening in the future 
 		//test 21
-		final int INITIAL_MEETING_ID = 1;
+		//final int INITIAL_MEETING_ID = 1;
 		Calendar cal = new GregorianCalendar(2015,Calendar.OCTOBER,15,13,0);
 
 		ContactManagerImpl manager = new ContactManagerImpl();
@@ -400,11 +399,11 @@ public class JUnitContactManagerTests
 		int futureMeetingId = manager.addFutureMeeting(contacts, cal);
 		manager.getPastMeeting(futureMeetingId);
 	}			
-
+			
 	@Test
 	public void testFutureMeetingId() 
 	{
-		//test return the future meeting with the requested ID
+		//test return the meeting with the requested ID
 		//test 22
 		final int INITIAL_MEETING_ID = 1;
 		Calendar cal = new GregorianCalendar(2015,Calendar.OCTOBER,15,13,0);
@@ -545,7 +544,7 @@ public class JUnitContactManagerTests
 		assertEquals(myMeetings.get(2).getDate(),cal3);
 		assertEquals(myMeetings.get(3).getDate(),cal4);		
 	}
-
+	
 	@Test
 	public void testGetFutureMeetingListByContactWitNoMeetings() 
 	{
@@ -601,7 +600,7 @@ public class JUnitContactManagerTests
 		assertEquals(myMeetings.get(2).getDate(),cal3);
 		assertEquals(myMeetings.get(3).getDate(),cal4);		
 	}
-
+	
 	@Test
 	public void testGetFutureMeetingListByContactWithoutDupes() 
 	{
@@ -633,7 +632,7 @@ public class JUnitContactManagerTests
 		List<Meeting> myMeetings = manager.getFutureMeetingList(contact);
 		assertTrue(myMeetings.size() == 4);
 	}
-
+	
 	@Test(expected = IllegalArgumentException.class)
 	public void testGetFutureMeetingListContactDoesNotExist() 
 	{
@@ -652,7 +651,8 @@ public class JUnitContactManagerTests
 
 		
 		Contact otherContact = new ContactImpl(123,"Johnny123","hello");
-		List<Meeting> myMeetings = manager.getFutureMeetingList(otherContact);		
+		//List<Meeting> myMeetings = manager.getFutureMeetingList(otherContact);
+		manager.getFutureMeetingList(otherContact);
 	}
 
 	@Test
@@ -783,7 +783,7 @@ public class JUnitContactManagerTests
 		//assertEquals(myMeetings.get(2).getDate(),cal3);
 		//assertEquals(myMeetings.get(3).getDate(),cal2);		
 	}
-
+	
 	@Test
 	public void testGetPastMeetingListByContact() 
 	{
@@ -861,7 +861,7 @@ public class JUnitContactManagerTests
 		assertEquals(myMeetings.get(2).getDate(),cal3);
 		assertEquals(myMeetings.get(3).getDate(),cal4);		
 	}
-
+	
 	@Test
 	public void testGetPastMeetingListByContactNoDupes() 
 	{
@@ -896,7 +896,7 @@ public class JUnitContactManagerTests
 		List<PastMeeting> myMeetings = manager.getPastMeetingList(contact1);
 		assertTrue(myMeetings.size() == 4);
 	}
-
+	
 	@Test(expected = IllegalArgumentException.class)
 	public void testGetPastMeetingListByNonExistantContact() 
 	{
@@ -914,9 +914,10 @@ public class JUnitContactManagerTests
 		manager.addNewPastMeeting(contacts,cal, "Past Meeting1");
 	
 		Contact otherContact = new ContactImpl(123,"Johnny123","hello");
-		List<PastMeeting> myMeetings = manager.getPastMeetingList(otherContact);
+		//List<PastMeeting> myMeetings = manager.getPastMeetingList(otherContact);
+		manager.getPastMeetingList(otherContact);
 	}
-
+		
 	@Test(expected = IllegalArgumentException.class)
 	public void testAddMeetingNotesToNonExistantMeeting()
 	{
@@ -1015,13 +1016,13 @@ public class JUnitContactManagerTests
 
 		Contact contact = new ContactImpl(1, "Johnny","VIP");
 		Contact contact2 = new ContactImpl(2, "Jane", "High net worth");
-		Contact contact3 = new ContactImpl(3, "Sally", "Just wasting our time");
-		Contact contact4 = new ContactImpl(4, "Sarah", "Good prospect");
-		Contact contact5 = new ContactImpl(5, "Anjum", "Will he show up?");
+		//Contact contact3 = new ContactImpl(3, "Sally", "Just wasting our time");
+		//Contact contact4 = new ContactImpl(4, "Sarah", "Good prospect");
+		//Contact contact5 = new ContactImpl(5, "Anjum", "Will he show up?");
 		
 		manager.getContacts(contact2.getId(),contact.getId(), contact.getId()+55);
 	}
-
+	
 	@Test
 	public void testGetContactsByString() 
 	{
@@ -1037,9 +1038,9 @@ public class JUnitContactManagerTests
 
 		Contact contact = new ContactImpl(1, "Johnny","VIP");
 		Contact contact2 = new ContactImpl(2, "Jane", "High net worth");
-		Contact contact3 = new ContactImpl(3, "Sally", "Just wasting our time");
-		Contact contact4 = new ContactImpl(4, "Sarah", "Good prospect");
-		Contact contact5 = new ContactImpl(5, "Anjum", "Will he show up?");
+		//Contact contact3 = new ContactImpl(3, "Sally", "Just wasting our time");
+		//Contact contact4 = new ContactImpl(4, "Sarah", "Good prospect");
+		//Contact contact5 = new ContactImpl(5, "Anjum", "Will he show up?");
 		
 		Set<Contact> expectedContactSet = new HashSet<Contact>();
 		//expectedContactSet.add(contact5);
@@ -1067,19 +1068,20 @@ public class JUnitContactManagerTests
 
 		Contact contact = new ContactImpl(1, "Johnny","VIP");
 		Contact contact2 = new ContactImpl(2, "Jane", "High net worth");
-		Contact contact3 = new ContactImpl(3, "Sally", "Just wasting our time");
-		Contact contact4 = new ContactImpl(4, "Sarah", "Good prospect");
-		Contact contact5 = new ContactImpl(5, "Anjum", "Will he show up?");
+		//Contact contact3 = new ContactImpl(3, "Sally", "Just wasting our time");
+		//Contact contact4 = new ContactImpl(4, "Sarah", "Good prospect");
+		//Contact contact5 = new ContactImpl(5, "Anjum", "Will he show up?");
 		
 		Set<Contact> expectedContactSet = new HashSet<Contact>();
 		//expectedContactSet.add(contact5);
 		expectedContactSet.add(contact2);
 		expectedContactSet.add(contact);
 
-		Set<Contact> actualContactSet = new HashSet<Contact>();
+		//Set<Contact> actualContactSet = new HashSet<Contact>();
 		//actualContactSet = manager.getContacts("j");
 		String tester = null;
-		actualContactSet = manager.getContacts(tester);
+		//actualContactSet = manager.getContacts(tester);
+		manager.getContacts(tester);
 	}
 
 	@Test(expected = NullPointerException.class)
@@ -1107,8 +1109,9 @@ public class JUnitContactManagerTests
 		expectedContactSet.add(contact4);
 		expectedContactSet.add(contact5);
 
-		Set<Contact> actualContactSet = new HashSet<Contact>();
+		//Set<Contact> actualContactSet = new HashSet<Contact>();
 		Integer tester = null;
-		actualContactSet = manager.getContacts(tester);
+		//actualContactSet = manager.getContacts(tester);
+		manager.getContacts(tester);
 	}
 }
