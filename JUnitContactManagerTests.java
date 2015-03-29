@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
  * Class JUnitContactManagerTests - This is JUNIT test class for Contact Manager.
  * 
  * @author Daryl Smith, MSc IT 
- * @version 42
+ * @version 43
  */
 
 public class JUnitContactManagerTests
@@ -925,5 +925,27 @@ public class JUnitContactManagerTests
 
 		ContactManagerImpl manager = new ContactManagerImpl();
 		manager.addMeetingNotes(99, "exception test");
+	}
+
+	@Test(expected = IllegalStateException.class)
+	public void testAddMeetingNotesToFutureMeeting() 
+	{
+		//@throws IllegalStateException if the meeting is set for a date in the future
+		//test 43
+		ContactManagerImpl manager = new ContactManagerImpl();
+		manager.addNewContact("Johnny", "VIP");
+		manager.addNewContact("Jane", "High net worth");
+		manager.addNewContact("Sally", "Just wasting our time");
+
+		Calendar cal = new GregorianCalendar(2015,Calendar.OCTOBER,21,9,0);
+
+		Contact contact1 = new ContactImpl(1,"Johnny","VIP");
+		Contact contact2 = new ContactImpl(2,"Jane", "High net worth");
+		Set<Contact> contacts = new HashSet<Contact>();
+		contacts.add(contact1);
+		contacts.add(contact2);
+
+		manager.addFutureMeeting(contacts, cal);
+		manager.addMeetingNotes(1, "exception test");
 	}
 }
