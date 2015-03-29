@@ -8,7 +8,7 @@ import java.util.Set;
  * Class ContactManagerImpl - implements ContactManager Interface.
  * 
  * @author Daryl Smith, MSc IT 
- * @version 4
+ * @version 5
  */
 
 public class ContactManagerImpl implements ContactManager {
@@ -50,8 +50,21 @@ public class ContactManagerImpl implements ContactManager {
 	}
 
 	@Override
-	public PastMeeting getPastMeeting(int id) {
-		// TODO Auto-generated method stub
+	public PastMeeting getPastMeeting(int id) 
+	{
+		for(int i = 0; i < myMeetings.size(); i++) 
+		{
+			if (myMeetings.get(i).getId() == id)
+				if (myMeetings.get(i) instanceof PastMeeting) 
+				{
+					return (PastMeeting)myMeetings.get(i);
+				}
+				else if (myMeetings.get(i) instanceof FutureMeeting) 
+				{
+					throw new IllegalArgumentException("This meeting is actually scheduled for a future date, whan a past date is expected.");
+				}
+			}
+
 		return null;
 	}
 
