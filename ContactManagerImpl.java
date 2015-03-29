@@ -8,7 +8,7 @@ import java.util.Set;
  * Class ContactManagerImpl - implements ContactManager Interface.
  * 
  * @author Daryl Smith, MSc IT
- * @version 6
+ * @version 7
  */
 
 public class ContactManagerImpl implements ContactManager {
@@ -88,8 +88,13 @@ public class ContactManagerImpl implements ContactManager {
 	}
 
 	@Override
-	public Meeting getMeeting(int id) {
-		// TODO Auto-generated method stub
+	public Meeting getMeeting(int id) 
+	{
+		for(int i = 0; i < myMeetings.size(); i++) 
+		{
+			if (myMeetings.get(i).getId() == id)
+				return myMeetings.get(i);
+		}
 		return null;
 	}
 
