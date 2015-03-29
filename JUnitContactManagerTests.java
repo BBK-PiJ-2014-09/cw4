@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
  * Class JUnitContactManagerTests - This is JUNIT test class for Contact Manager.
  * 
  * @author Daryl Smith, MSc IT 
- * @version 23
+ * @version 24
  */
 
 public class JUnitContactManagerTests
@@ -442,5 +442,33 @@ public class JUnitContactManagerTests
 		ContactManagerImpl manager = new ContactManagerImpl();
 	
 		assertEquals(manager.getFutureMeeting(NON_EXISTANT_MEETING_ID), null);
+	}
+
+	@Test(expected = IllegalArgumentException.class)
+	public void testGetFutureMeetingWithPastDate2() 
+	{
+		//test throws IllegalArgumentException if there is a meeting with that ID happening in the past
+		//test 24
+		//final int INITIAL_MEETING_ID = 1;
+		Calendar cal = new GregorianCalendar(2015,Calendar.JANUARY,15,13,0);
+
+		ContactManagerImpl manager = new ContactManagerImpl();
+	
+		manager.addNewContact("Johnny", "VIP");
+		manager.addNewContact("Jane", "High net worth");
+		manager.addNewContact("Sally", "Just wasting our time");
+
+		Contact contact = new ContactImpl(1, "Johnny", "VIP");
+		Contact contact2 = new ContactImpl(2, "Jane", "High net worth");
+		Contact contact3 = new ContactImpl(3, "Sally", "Just wasting our time");
+		Set<Contact> contacts = new HashSet<Contact>();
+		contacts.add(contact);
+		contacts.add(contact2);
+		contacts.add(contact3);
+
+		//FutureMeeting myFutureMeeting = new FutureMeetingImpl(INITIAL_MEETING_ID, cal, contacts);
+		int futureMeetingId = manager.addFutureMeeting(contacts, cal);
+		manager.getFutureMeeting(futureMeetingId);
+		//assertEquals(manager.addFutureMeeting(contacts, cal) ,futureMeetingId);
 	}
 }
