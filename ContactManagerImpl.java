@@ -8,7 +8,7 @@ import java.util.Set;
  * Class ContactManagerImpl - implements ContactManager Interface.
  * 
  * @author Daryl Smith, MSc IT
- * @version 8
+ * @version 9
  */
 
 public class ContactManagerImpl implements ContactManager {
@@ -18,11 +18,13 @@ public class ContactManagerImpl implements ContactManager {
 	private List<Meeting> myMeetings;
 	private Set<Contact> myContacts;
 	
-	ContactManagerStubImpl() {
+	ContactManagerImpl() {
+		this.meetingId = 1;
 		this.contactId = 1;
+		this.myMeetings = new ArrayList<Meeting>();
 		this.myContacts = new HashSet<Contact>();
 	}
-
+	
 	@Override
 	public int addFutureMeeting(Set<Contact> contacts, Calendar date) 
 	{
@@ -87,7 +89,7 @@ public class ContactManagerImpl implements ContactManager {
 		return null;
 	}
 
-		@Override
+	@Override
 	public Meeting getMeeting(int id) 
 	{
 		for(int i = 0; i < myMeetings.size(); i++) 
@@ -120,12 +122,6 @@ public class ContactManagerImpl implements ContactManager {
 			}
 		}
 		
-		//dedupe
-		HashSet<Meeting> dedupedMeetingSet = new HashSet<Meeting>();
-		dedupedMeetingSet.addAll(myMeetingsList);
-		myMeetingsList.clear();
-		myMeetingsList.addAll(dedupedMeetingSet);
-
 		//use an anonymous class to sort the meetings
 		myMeetingsList.sort(new Comparator<Meeting>() 
 		{
@@ -136,6 +132,16 @@ public class ContactManagerImpl implements ContactManager {
 			}
 		});
 		
+		//now dedupe the sorted list (date, time and contacts are all the same)
+		for(int i = 1; i < myMeetingsList.size(); i++) 
+		{
+			if (myMeetingsList.get(i).getDate().equals(myMeetingsList.get(i-1).getDate()) &&
+					myMeetingsList.get(i).getContacts().equals(myMeetingsList.get(i-1).getContacts())) 
+			{
+				myMeetingsList.remove(i);
+			}
+		}
+
 		return myMeetingsList;
 	}
 
@@ -156,12 +162,6 @@ public class ContactManagerImpl implements ContactManager {
 			}
 		}
 
-		//dedupe
-		HashSet<Meeting> dedupedMeetingSet = new HashSet<Meeting>();
-		dedupedMeetingSet.addAll(myMeetingsList);
-		myMeetingsList.clear();
-		myMeetingsList.addAll(dedupedMeetingSet);
-		
 		//use an anonymous class to sort the meetings
 		myMeetingsList.sort(new Comparator<Meeting>() 
 		{
@@ -172,6 +172,16 @@ public class ContactManagerImpl implements ContactManager {
 			}
 		});
 		
+		//now dedupe the sorted list (date, time and contacts are all the same)
+		for(int i = 1; i < myMeetingsList.size(); i++) 
+		{
+			if (myMeetingsList.get(i).getDate().equals(myMeetingsList.get(i-1).getDate()) &&
+					myMeetingsList.get(i).getContacts().equals(myMeetingsList.get(i-1).getContacts())) 
+			{
+				myMeetingsList.remove(i);
+			}
+		}
+
 		return myMeetingsList;	
 	}
 
@@ -196,12 +206,6 @@ public class ContactManagerImpl implements ContactManager {
 				}
 			}
 		}
-
-		//dedupe
-		HashSet<PastMeeting> dedupedMeetingSet = new HashSet<PastMeeting>();
-		dedupedMeetingSet.addAll(myMeetingsList);
-		myMeetingsList.clear();
-		myMeetingsList.addAll(dedupedMeetingSet);
 		
 		//use an anonymous class to sort the meetings
 		myMeetingsList.sort(new Comparator<Meeting>() 
@@ -213,38 +217,43 @@ public class ContactManagerImpl implements ContactManager {
 			}
 		});
 
+		//now dedupe the sorted list (date, time and contacts are all the same)
+		for(int i = 1; i < myMeetingsList.size(); i++) 
+		{
+			if (myMeetingsList.get(i).getDate().equals(myMeetingsList.get(i-1).getDate()) &&
+					myMeetingsList.get(i).getContacts().equals(myMeetingsList.get(i-1).getContacts())) 
+			{
+				myMeetingsList.remove(i);
+			}
+		}
+
 		return myMeetingsList;	
 	}
 
 	@Override
-	public void addNewPastMeeting(Set<Contact> contacts, Calendar date, String text) 
-	{		
+	public void addNewPastMeeting(Set<Contact> contacts, Calendar date, String text) {		
 		//test for null arguments
-		if (contacts == null || date == null || text == null) 
-		{
+		if (contacts == null || date == null || text == null) {
 			throw new NullPointerException("At least one of the supplied parameters was null");
 		}
-		
 		//test that contacts are known and exist 
 		Iterator<Contact> myIterator = contacts.iterator();
-		if (contacts.isEmpty()) 
-		{
+		if (contacts.isEmpty()) {
 			throw new IllegalArgumentException("The supplied list of contacts is empty.");
 		}
-		while (myIterator.hasNext()) 
-		{
+		while (myIterator.hasNext()) {
 			//Contact tmpContact = myIterator.next();
-			if (!this.myContacts.contains(myIterator.next())) 
-			{
+			if (!this.myContacts.contains(myIterator.next())) {
 				throw new IllegalArgumentException("The contact is unknown.");
 			}
 		}
-
+		
 		PastMeeting myPastMeeting = new PastMeetingImpl(this.meetingId, date, contacts, text);
 		this.myMeetings.add(myPastMeeting);
 		this.meetingId++;
 	}		
-
+	
+	
 	@Override
 	public void addMeetingNotes(int id, String text) 
 	{
@@ -284,10 +293,8 @@ public class ContactManagerImpl implements ContactManager {
 	}
 
 	@Override
-	public void addNewContact(String name, String notes) 
-	{
-		if (name == null || notes == null) 
-		{
+	public void addNewContact(String name, String notes) {
+		if (name == null || notes == null) {
 			throw new NullPointerException();
 		}
 	
@@ -295,7 +302,8 @@ public class ContactManagerImpl implements ContactManager {
 		this.myContacts.add(myContact);
 		this.contactId++;
 	}
-
+	
+	@Override
 	public Set<Contact> getContacts(int... ids) 
 	{
 		Set<Contact> contactSet = new HashSet<Contact>();
@@ -421,7 +429,6 @@ public class ContactManagerImpl implements ContactManager {
 			System.out.println("error reading file");			
 		}
 	}
-
 	@Override
 	public void flush() 
 	{
