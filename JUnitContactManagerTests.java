@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
  * Class JUnitContactManagerTests - This is JUNIT test class for Contact Manager.
  * 
  * @author Daryl Smith, MSc IT 
- * @version 21
+ * @version 22
  */
 
 public class JUnitContactManagerTests
@@ -400,4 +400,35 @@ public class JUnitContactManagerTests
 		int futureMeetingId = manager.addFutureMeeting(contacts, cal);
 		manager.getPastMeeting(futureMeetingId);
 	}			
+
+	@Test
+	public void testFutureMeetingId() 
+	{
+		//test return the future meeting with the requested ID
+		//test 22
+		final int INITIAL_MEETING_ID = 1;
+		Calendar cal = new GregorianCalendar(2015,Calendar.OCTOBER,15,13,0);
+
+		ContactManagerImpl manager = new ContactManagerImpl();
+	
+		manager.addNewContact("Johnny", "VIP");
+		manager.addNewContact("Jane", "High net worth");
+		manager.addNewContact("Sally", "Just wasting our time");
+
+		Contact contact = new ContactImpl(1, "Johnny", "VIP");
+		Contact contact2 = new ContactImpl(2, "Jane", "High net worth");
+		Contact contact3 = new ContactImpl(3, "Sally", "Just wasting our time");
+		Set<Contact> contacts = new HashSet<Contact>();
+		contacts.add(contact);
+		contacts.add(contact2);
+		contacts.add(contact3);
+
+		manager.addFutureMeeting(contacts, cal);
+		int actualMeetingId = manager.getFutureMeeting(INITIAL_MEETING_ID).getId();
+		Calendar actualMeetingDate = manager.getFutureMeeting(INITIAL_MEETING_ID).getDate();
+		Set<Contact> actualMeetingContacts = manager.getFutureMeeting(INITIAL_MEETING_ID).getContacts();
+		assertEquals(actualMeetingId, INITIAL_MEETING_ID);
+		assertEquals(actualMeetingDate, cal);
+		assertEquals(actualMeetingContacts, contacts);
+	}
 }
